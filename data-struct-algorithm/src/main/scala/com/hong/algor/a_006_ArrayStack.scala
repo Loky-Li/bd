@@ -1,4 +1,4 @@
-package com.hong
+package com.hong.algor
 
 import scala.io.StdIn
 

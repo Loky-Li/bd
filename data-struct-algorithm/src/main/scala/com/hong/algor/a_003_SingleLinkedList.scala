@@ -1,71 +1,55 @@
-package com.hong
+package com.hong.algor
 
-import scala.util.control.Breaks
+import scala.util.control._
 
-object a_004_DoubleLinkedList {
+object a_003_SingleLinkedList {
     def main(args: Array[String]): Unit = {
-        val h1 = new HeroNode2(1, "宋江", "及时雨")
-        val h2 = new HeroNode2(3,"宋江3", "及时雨3")
-        val h3 = new HeroNode2(4,"宋江4", "及时雨4")
-        val h4 = new HeroNode2(2,"宋江2", "及时雨2")
+        val h1 = new HeroNode(1, "宋江", "及时雨")
+        val h3 = new HeroNode(3,"宋江3", "及时雨3")
+        val h4 = new HeroNode(4,"宋江4", "及时雨4")
+        val h2 = new HeroNode(2,"宋江2", "及时雨2")
 
-        val linkedList = new DoubleLinkedList
+        val linkedList = new SingleLinkedList
 
         linkedList.add(h1)
-        linkedList.add(h2)
         linkedList.add(h3)
         linkedList.add(h4)
-
-        //        linkedList.add2(h1)
-        //        linkedList.add2(h3)
-        //        linkedList.add2(h4)
-        //        linkedList.add2(h2)
-
-        linkedList.list()
-
-        val h5 = new HeroNode2(3,"吴用", "智多星")
-
-        println("=======更新========")
-        linkedList.update(h5)
-        linkedList.list()
-
-        println("=======删除========")
-        linkedList.del(4)
-        linkedList.del(3)
-        linkedList.del(2)
-        linkedList.list()
-
-        println("=======只添加一个，查看异常========")
         linkedList.add(h2)
+
+//        linkedList.add2(h1)
+//        linkedList.add2(h3)
+//        linkedList.add2(h4)
+//        linkedList.add2(h2)
+
         linkedList.list()
+
+        val h5 = new HeroNode(3,"吴用", "智多星")
+
+        linkedList.update(h5)
+        println("===============")
+        linkedList.list()
+
 
     }
 
 }
 
-class DoubleLinkedList{
+class SingleLinkedList {
 
-    val head = new HeroNode2(0,"","")
+    // 创建一个头节点，不存实际的数据
+    val head = new HeroNode(0, "", "")
 
-
-    // 双向链表
     def del(no:Int):Unit={
-
-        if(head.next == null){
-            println("链表空")
-            return
-        }
-
         var temp = head
         var flag = false  //是否存在要删除的节点
 
         Breaks.breakable{
             while (true) {
-                if (temp == null) {
+                if (temp.next == null) {
                     Breaks.break()
                 }
 
-                if(temp.no == no){
+                if(temp.next.no == no){
                     //找到了
                     flag = true
                     Breaks.break()
@@ -76,16 +60,13 @@ class DoubleLinkedList{
         }
 
         if(flag){
-            temp.pre.next = temp.next
-            if(temp.next != null){
-                temp.next.pre = temp.pre
-            }
+             temp.next = temp.next.next
         }else{
-            printf("没有找到no=%d,要删除的节点\n",no)
+            printf("没有找到no=%d,要删除的节点",no)
         }
     }
 
-    def update(newHeroNode:HeroNode2) : Unit = {
+    def update(newHeroNode:HeroNode) : Unit = {
         if(head.next == null){
             println("链表为空")
             return
@@ -120,7 +101,7 @@ class DoubleLinkedList{
 
     //添加节点
     // 第一种方法在添加英雄时，直接添加到链表的尾部
-    def add(heroNode: HeroNode2): Unit = {
+    def add(heroNode: HeroNode): Unit = {
         var temp = head
         Breaks.breakable{
             while(true){
@@ -134,11 +115,10 @@ class DoubleLinkedList{
 
         //temp就是最后的一个节点，则新加的节点加在这个节点之后
         temp.next = heroNode
-        heroNode.pre = temp
     }
-/*
+
     // 第二种方法，添加英雄时，英雄可以找到自己的位置进行插入
-    def add2(heroNode :HeroNode2):Unit = {
+    def add2(heroNode :HeroNode):Unit = {
 
 
         var temp = head
@@ -163,14 +143,14 @@ class DoubleLinkedList{
         }
 
         if(flag){
-            println("待插入的英雄编号 %d 已经存在，不能加入", heroNode.no)
+           println("待插入的英雄编号 %d 已经存在，不能加入", heroNode.no)
         }else{      //添加node
             heroNode.next = temp.next
             temp.next = heroNode
 
         }
     }
-*/
+
     def list():Unit = {
         if(head.next == null){
             println("链表为空")
@@ -193,10 +173,9 @@ class DoubleLinkedList{
     }
 }
 
-class HeroNode2(hNo: Int, hName: String, hNickname: String) {
+class HeroNode(hNo: Int, hName: String, hNickname: String) {
     var no: Int = hNo
     var name: String = hName
     var nickname: String = hNickname
-    var next: HeroNode2 = null // next 默认为null
-    var pre:HeroNode2 = null
+    var next: HeroNode = null // next 默认为null
 }
