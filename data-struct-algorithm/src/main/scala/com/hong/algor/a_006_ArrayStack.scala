@@ -2,6 +2,7 @@ package com.hong.algor
 
 import scala.io.StdIn
 
+
 object a_006_ArrayStack {
     def main(args: Array[String]): Unit = {
 
